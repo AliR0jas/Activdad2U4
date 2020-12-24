@@ -1,0 +1,48 @@
+﻿@model Activdad2U4.Models.ViewModels.AlumnoViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+<main>
+    <section id="datos">
+        <h1>Modificar información del alumno</h1>
+        @if (User.IsInRole("Director"))
+        {
+    <form method="post" action="~/Home/EditarAlumno">
+        <input type="hidden" asp-for="Alumno.Id" />
+        <br />
+        <label id="labels">Maestro a cargo del grupo:</label>
+        <input id="txtdisplay" type="text" asp-for="Maestro.Nombre" readonly />
+        <br />
+        <label id="labels">Número de control del maestro:</label>
+        <input id="txtdisplay" type="number" asp-for="Maestro.NoControl" readonly />
+        <br />
+        <label id="labels">Número de control:</label>
+        <input id="txtdisplay" type="text" asp-for="Alumno.NoControl" required readonly />
+        <br />
+        <label id="editar">Nombre completo:</label>
+        <input type="text" asp-for="Alumno.Nombre" required />
+        <br />
+        @Html.ValidationSummary()
+        <input type="submit" value="Editar" />
+        <a href="~/Home/VerAlumno/@(Model.Maestro.Id)">Cancelar</a>
+    </form> }
+else if (User.IsInRole("Maestro"))
+{
+<form method="post" action="~/Home/EditarAlumno">
+    <input type="hidden" asp-for="Alumno.Id" />
+    <input id="txtdisplay" type="text" asp-for="Maestro.Nombre" readonly hidden />
+    <input id="txtdisplay" type="number" asp-for="Maestro.NoControl" readonly hidden />
+    <br />
+    <label id="labels">Número de control:</label>
+    <input id="txtdisplay" type="text" asp-for="Alumno.NoControl" required readonly />
+    <br />
+    <label id="editar">Nombre completo:</label>
+    <input type="text" asp-for="Alumno.Nombre" required />
+    <br />
+    @Html.ValidationSummary()
+    <input type="submit" value="Aceptar" />
+    <a href="~/Home/VerAlumno/@(int.Parse(User.Claims.FirstOrDefault(x=>x.Type=="Id").Value))">Cancelar</a>
+</form>}
+    </section>
+</main>

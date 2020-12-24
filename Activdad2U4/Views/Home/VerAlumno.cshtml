@@ -1,0 +1,49 @@
+﻿@model Activdad2U4.Models.Maestro
+@{
+    Layout = "_Layout"; 
+}
+<main>
+    <section id="datos">
+        <h1>Alumnos del docente: @Model.Nombre</h1>
+        <a href="~/Home/AgregarAlumno/@Model.Id">Agregar Alumno</a>
+        <table id="alumnos">
+            <thead>
+                <tr>
+                    <th>Número de control</th>
+                    <th>Nombre completo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var alumno in Model.Alumno)
+                {
+                 <tr>
+                    <td>@alumno.NoControl</td>
+                    <td>@alumno.Nombre</td>
+                    <td>
+                        <a href="~/Home/EditarAlumno/@alumno.Id">Editar</a>
+                    </td>
+                    <td>
+                        <a href="#" onclick="eliminar(@alumno.Id)">Eliminar</a>
+                    </td>
+                 </tr>
+                 }
+            </tbody>
+        </table>
+        @if (User.IsInRole("Maestro"))
+        {
+            <a href="~/Home/Index">Regresar</a> }
+            else if (User.IsInRole("Director"))
+        {
+            <a href="~/Home/VerDocente/@Model.Id">Regresar</a>}
+    </section>
+    <form method="post" action="~/Home/EliminarAlumno">
+        <input type="number" name="Id" id="idAlumno" hidden />
+    </form>
+    <script>
+        function eliminar(id)
+        {
+            document.getElementById("idAlumno").value = id;
+            document.querySelector("form").submit();
+        }
+    </script>
+</main>

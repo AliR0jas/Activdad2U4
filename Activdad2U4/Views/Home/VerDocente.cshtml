@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Activdad2U4.Models.Maestro>
+@{ 
+    Layout = "_Layout"; 
+}
+<main>
+    <section id="datos">
+        <h1>Lista de maestros</h1>
+        <a href="~/Home/RegistrarDocente">Registrar un docente</a>
+        <table id="tablas">
+            <thead>
+                <tr>
+                    <th>Número de control</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Grupo</th>
+                </tr>
+            </thead>
+            <tbody>
+               @foreach (var maestro in Model)
+                {
+                    <tr>
+                        <td>@maestro.NoControl</td>
+                        <td>@maestro.Nombre</td>
+                        <td id="activo" href="#" onclick="cambiar(@maestro.Id)">@((maestro.Activo==1)?"Activo":"Inactivo")</td>
+                        @if (maestro.Activo == 1)
+                         {
+                            <td>
+                                <a href="~/Home/VerAlumno/@maestro.Id">Ver lista de alumnos</a>
+                            </td>
+                            <td>
+                                <a href="~/Home/EditarDocente/@maestro.Id">Modificar</a>
+                            </td>
+                            <td>
+                                <a href="~/Home/CambiarContrasena/@maestro.Id">Cambiar contraseña</a>
+                            </td>
+                         }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="~/Home/Index">Regresar</a>
+    </section>
+    <form method="post" action="~/Home/ActivarDocente">
+        <input type="number" id="idMaestro" name="Id" hidden />
+    </form>
+    <script>
+        function cambiar(id) {
+            document.getElementById("idMaestro").value = id;
+            document.querySelector("form").submit();
+        }
+    </script>
+</main>
